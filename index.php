@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
 <!-- header -->
-<?php include('assets/header.php') ?>
+<?php include('../../assets/header.php') ?>
 
 
 
@@ -100,7 +100,7 @@
         <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-    <?php include('assets/footer.php') ?>
+    <?php include('../../assets/footer.php') ?>
 
 </body>
 
