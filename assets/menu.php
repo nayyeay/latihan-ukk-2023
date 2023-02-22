@@ -10,10 +10,10 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="../../assets/dist/img/lotso.jpg" class="img-circle elevation-2" alt="User Image">
+                <img src="../../assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">nanayaa</a>
+                <a href="#" class="d-block"><?= $_SESSION['username'] ?></a>
             </div>
         </div>
 
@@ -26,29 +26,32 @@
                with font-awesome or any other icon font library -->
 
                 <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
+                    <a href="http://<?= $_SERVER['SERVER_NAME'] ?>/latihan-ukk-2023/modul/modul-profile/" class="nav-link">
                         <i class="nav-icon fas fa-user-circle"></i>
                         <p>
-                            User
+                            Profil
                         </p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>
-                            Masyarakat
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="pages/widgets.html" class="nav-link">
-                        <i class="nav-icon fas fa-lock"></i>
+                    <a href="http://<?= $_SERVER['SERVER_NAME'] ?>/latihan-ukk-2023/modul/modul-pengaduan" class="nav-link">
+                        <i class="nav-icon fas fa-exclamation-circle"></i>
                         <p>
                             Pengaduan
                         </p>
                     </a>
                 </li>
+                <?php if ($_SESSION['level'] == 'admin') { ?>
+                    <li class="nav-item">
+                        <a href="http://<?= $_SERVER['SERVER_NAME'] ?>/latihan-ukk-2023/modul/modul-masyarakat" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>
+                                Masyarakat
+                            </p>
+                        </a>
+                    </li>
+
+                <?php } ?>
                 <li class="nav-item">
                     <a href="http://<?= $_SERVER['SERVER_NAME'] ?>/latihan-ukk-2023/modul/modul-tanggapan" class="nav-link">
                         <i class="nav-icon fas fa-reply"></i>

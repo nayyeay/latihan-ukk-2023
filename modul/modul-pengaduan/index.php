@@ -1,19 +1,25 @@
+<?php
+// SESSION
+session_start();
+include('../../config/database.php');
+if (empty($_SESSION['username'])) {
+    @header('location:../modul-auth/index.php');
+} else {
+    $nik = $_SESSION['nik'];
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-
 <!-- header -->
-<?php include('assets/header.php') ?>
-
-
+<?php include('../../assets/header.php') ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+            <img class="animation__shake" src="../../assets/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
         </div>
 
         <!-- Navbar -->
@@ -21,14 +27,14 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i>Tambah siswa</a>
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
             </ul>
         </nav>
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <?php include('assets/menu.php'); ?>
+        <?php include('../../assets/menu.php') ?>
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Main content -->
@@ -37,70 +43,100 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Data siswa</h3>
-                                <br>
-                                <button class="btn btn-success"><i class="fa-solid fa-user-plus"></i>Tambah data</button>
+                                <h3 class="card-title">Pengaduan</h3><br>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <button data-toggle="modal" data-target="#modal-lg" class="btn btn-success">buat pengaduan&nbsp;<i class="fa fa-pen"></i></button>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="modal-lg">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                Buat Pengaduan
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="" method="post" enctype="form-data">
+                                                    <div class="form-group">
+                                                        <label for="isi_laporan">Isi Laporan</label>
+                                                        <textarea name="isi_laporan" class="form-control" cols="30" rows="10"></textarea>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="tgl_pengaduan">Tanggal Pengaduan</label>
+                                                        <input type="date" name="tgl_pengaduan" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="foto">Foto</label>
+                                                        <input type="file" name="foto" class="form-control">
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table id="dataTablesNya" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Tanggal</th>
+                                                <th>Nik</th>
+                                                <th>Isi Laporan</th>
+                                                <th>Foto</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <?php  ?>
+                                        <tbody>
+                                            <?php
+                                            $q = "SELECT * FROM `pengaduan` WHERE `nik` = $nik";
+                                            $r = mysqli_query($con, $q);
+                                            $no = 1;
+                                            while ($d = mysqli_fetch_object($r)) {
+                                            ?>
+                                                <tr>
+                                                    <td><?= $no ?></td>
+                                                    <td><?= $d->tgl_pengaduan ?></td>
+                                                    <td><?= $d->nik ?></td>
+                                                    <td><?= $d->isi_laporan ?></td>
+                                                    <td><?php if ($d->foto == '') {
+                                                            echo '<img style="max-height:100px" class="img img-thumbnail" src="../../assets/images/no-foto.png">';
+                                                        } ?></td>
+                                                    <td><?= $d->status ?></td>
+                                                </tr>
+                                            <?php $no++;
+                                            } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table id="example1" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>No</th>
-                                            <th>Nik</th>
-                                            <th>Nama</th>
-                                            <th>Username</th>
-                                            <th>Password</th>
-                                            <th>Telepon</th>
-                                            <th>Verifikasi</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>678567</td>
-                                            <td>nanayaa</td>
-                                            <td>raa</td>
-                                            <td>1234</td>
-                                            <td>09876543</td>
-                                            <td>00000</td>
-                                              
-                                            <td style="text-align:center"><button name="hapusSiswa" class="btn btn-danger"><i class="fa-regular fa-trash-can"></i> hapus </button>
-                                            <button class="btn btn-success"><i class="fa-regular fa-pen-to-square" aria-hidden="true"></i> edit</button></td>
-                                            
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!-- /.card-body -->
                         </div>
-                        <!-- /.card -->
+                        <!-- /.col -->
                     </div>
-                    <!-- /.col -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.row -->
+                <!-- /.container-fluid -->
+                <!-- /.content -->
             </div>
-            <!-- /.container-fluid -->
-            <!-- /.content -->
-        </div>
-        <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-            All rights reserved.
-            <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 3.2.0
-            </div>
-        </footer>
+            <!-- /.content-wrapper -->
+            <footer class="main-footer">
+                <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+                All rights reserved.
+                <div class="float-right d-none d-sm-inline-block">
+                    <b>Version</b> 3.2.0
+                </div>
+            </footer>
 
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
-    </div>
-    <!-- ./wrapper -->
-    <?php include('assets/footer.php') ?>
+            <!-- Control Sidebar -->
+            <aside class="control-sidebar control-sidebar-dark">
+                <!-- Control sidebar content goes here -->
+            </aside>
+            <!-- /.control-sidebar -->
+        </div>
+        <!-- ./wrapper -->
+        <?php include('../../assets/footer.php') ?>
 
 </body>
 
